@@ -1,0 +1,29 @@
+name: Release to CurseForge
+
+on:
+  push:
+    tags:
+      - "v*"
+      - "[0-9]+.*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Package and upload
+        uses: BigWigsMods/packager@v2
+        env:
+          # Create this secret from https://authors.curseforge.com/#/settings/api-tokens
+          CF_API_KEY: ${{ secrets.CF_API_KEY }}
+          CF_API_TOKEN: ${{ secrets.CF_API_KEY }}
+          GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: -p 1650045

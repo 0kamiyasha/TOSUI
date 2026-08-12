@@ -1,0 +1,8 @@
+## Title: |cffffd700TOS|r|cff9b4dffUI|r_Data
+## Author: TOS
+## Interface: 120100
+## RequiredDeps: TOSUI
+## LoadOnDemand: 1
+## IconTexture: Interface\AddOns\TOSUI\Media\Textures\LogoTOSUI
+
+!load.xml

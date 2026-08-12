@@ -1,0 +1,10 @@
+# Ignore all folders except the addon pack and CI/release metadata
+/*
+!/TOSUI/
+!/TOSUI_Data/
+!.gitignore
+!README.md
+!CHANGELOG.md
+!.github/
+!.pkgmeta
+!/docs/

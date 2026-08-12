@@ -1,0 +1,107 @@
+name: Submit profile string
+description: Propose an updated import string for TOSUI_Data (opens a PR automatically).
+title: "[Profile] "
+labels: ["profile-submission"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Paste an in-game export string to update the packaged TOSUI profiles.
+        A pull request will be opened automatically for maintainers to review.
+        CurseForge is only published when a version tag is pushed after merge.
+
+        Ellesmere role/resolution variants only appear in the in-game installer after a string is merged.
+
+  - type: dropdown
+    id: profile
+    attributes:
+      label: Profile
+      description: Which packaged profile are you updating?
+      options:
+        - EllesmereUI
+        - BigWigs
+        - Edit Mode
+        - MRT
+        - Class Layout
+    validations:
+      required: true
+
+  - type: dropdown
+    id: role
+    attributes:
+      label: Ellesmere role
+      description: Only used for EllesmereUI. Use Default for the classic non-role profile, or N/A for other addons.
+      options:
+        - Default
+        - DPS
+        - Healer
+        - Tank
+        - N/A
+    validations:
+      required: true
+
+  - type: dropdown
+    id: resolution
+    attributes:
+      label: Resolution
+      description: Use N/A for Class Layout submissions.
+      options:
+        - 1440p
+        - 1080p
+        - 4K
+        - Ultrawide
+        - N/A (Class Layout)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: class
+    attributes:
+      label: Class
+      description: Only required when Profile is Class Layout.
+      options:
+        - N/A
+        - DeathKnight
+        - DemonHunter
+        - Druid
+        - Evoker
+        - Hunter
+        - Mage
+        - Monk
+        - Paladin
+        - Priest
+        - Rogue
+        - Shaman
+        - Warlock
+        - Warrior
+    validations:
+      required: true
+
+  - type: textarea
+    id: import_string
+    attributes:
+      label: Primary import string
+      description: Paste the full export string (no surrounding quotes).
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: secondary_string
+    attributes:
+      label: Secondary string (BigWigs boss options)
+      description: Optional for most profiles. For BigWigs, paste the boss-options export here if you are updating both parts.
+      render: text
+
+  - type: input
+    id: scale
+    attributes:
+      label: EllesmereUI UI scale (optional)
+      description: Number only (for example 0.5333333333). Leave blank to keep the current packaged scale.
+      placeholder: "0.5333333333"
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: What changed? Any testing notes for reviewers?
