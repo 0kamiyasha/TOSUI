@@ -32,9 +32,6 @@ jobs:
           python3 .github/scripts/apply_profile_string.py \
             --body-file /tmp/issue-body.md \
             --summary-file /tmp/summary.json
-          echo "summary<<EOF" >> "$GITHUB_OUTPUT"
-          cat /tmp/summary.json >> "$GITHUB_OUTPUT"
-          echo "EOF" >> "$GITHUB_OUTPUT"
           FILE=$(python3 -c 'import json; print(json.load(open("/tmp/summary.json"))["file"])')
           KEY=$(python3 -c 'import json; print(json.load(open("/tmp/summary.json"))["key"])')
           echo "file=$FILE" >> "$GITHUB_OUTPUT"
@@ -75,6 +72,18 @@ jobs:
               body: `Opened pull request for this submission: ${url}`
             });
 
+      - name: Comment when already packaged
+        if: success() && steps.cpr.outputs.pull-request-url == ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: 'Parsed this submission, but `TOSUI_Data` already has the same `D.${{ steps.apply.outputs.key }}` string. No pull request was opened.'
+            });
+
       - name: Comment on failure
         if: failure()
         uses: actions/github-script@v7
@@ -84,5 +93,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: 'Could not auto-create a PR from this submission. Check the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) logs and fix the form fields (profile/role/resolution/class/string).'
+              body: 'Could not auto-create a PR from this submission. Check the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) logs.'
             });
