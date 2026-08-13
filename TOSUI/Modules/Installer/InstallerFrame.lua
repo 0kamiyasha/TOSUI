@@ -1280,7 +1280,7 @@ local function RefreshEllesmereCount(self)
             selected = selected + 1
         end
     end
-    frame.countFs:SetText(format("Import will include %d of %d addons", selected, total))
+    frame.countFs:SetText(format("Import will include %d of %d modules", selected, total))
 end
 
 function TOSUIInstaller:ShowEllesmereImportPicker(opts)

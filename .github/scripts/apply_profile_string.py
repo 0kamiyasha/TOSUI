@@ -51,6 +51,18 @@ CLASS_FILES = {
 }
 
 
+def normalize_form_value(value: str) -> str:
+    """Strip issue-form fences and GitHub's empty-optional placeholder."""
+    value = value.strip()
+    if value.startswith("```") and value.endswith("```"):
+        lines = value.splitlines()
+        if len(lines) >= 2:
+            value = "\n".join(lines[1:-1]).strip()
+    if value.lower() in {"_no response_", "no response"}:
+        return ""
+    return value
+
+
 def parse_issue_body(body: str) -> dict[str, str]:
     """Parse GitHub issue-form markdown into a field dict."""
     fields: dict[str, str] = {}
@@ -61,12 +73,7 @@ def parse_issue_body(body: str) -> dict[str, str]:
         nonlocal current, chunks
         if current is None:
             return
-        value = "\n".join(chunks).strip()
-        if value.startswith("```") and value.endswith("```"):
-            lines = value.splitlines()
-            if len(lines) >= 2:
-                value = "\n".join(lines[1:-1]).strip()
-        fields[current] = value
+        fields[current] = normalize_form_value("\n".join(chunks))
         current = None
         chunks = []
 
